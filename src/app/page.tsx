@@ -1,66 +1,39 @@
-import Image from "next/image";
 import styles from "./page.module.css";
 
 export default function Home() {
   return (
     <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className={styles.intro}>
-          <h1>To get started, edit the page.tsx file.</h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+      <header className={styles.hero}>
+        <h1 className={styles.title}>clearance</h1>
+        <p className={styles.subtitle}>Enterprise Compliance Command Center</p>
+      </header>
+
+      <section className={styles.dashboardGrid}>
+        <div className={`glass-panel ${styles.card} ${styles.large}`}>
+          <h3>Permit Approvals</h3>
+          <div className={styles.placeholderChart}></div>
         </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+
+        <div className={`glass-panel ${styles.card}`}>
+          <h3>Inspections</h3>
+          <ul className={styles.list}>
+            <li>Site A: Scheduled 14:00</li>
+            <li>Site B: Pending Review</li>
+          </ul>
         </div>
-      </main>
+
+        <div className={`glass-panel ${styles.card}`}>
+          <h3>Invoices</h3>
+          <div className={styles.stat}>$12,450</div>
+          <div className={styles.statLabel}>Pending</div>
+        </div>
+
+        <div className={`glass-panel ${styles.card}`}>
+          <h3>Jurisdiction</h3>
+          <div className={styles.tag}>San Francisco</div>
+          <div className={styles.tag}>Alameda</div>
+        </div>
+      </section>
     </div>
   );
 }
