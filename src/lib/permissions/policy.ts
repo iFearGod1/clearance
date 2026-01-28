@@ -1,0 +1,91 @@
+import type { Policy } from "./types";
+import type { Action } from "./actions";
+
+function denyAll(): Record<Action, boolean> {
+    return {
+        "permit.read": false,
+        "permit.write": false,
+        "permit.submit": false,
+        "permit.approve": false,
+        "permit.archive": false,
+        "inspection.read": false,
+        "inspection.schedule": false,
+        "inspection.complete": false,
+        "invoice.read": false,
+        "invoice.create": false,
+        "invoice.send": false,
+        "jurisdiction.read": false,
+        "jurisdiction.write": false,
+        "calc.use": false,
+        "calc.save_to_record": false,
+        "measurement.capture": false,
+        "measurement.save_to_record": false,
+        "audit.read": false,
+        "audit.export": false,
+    };
+}
+
+export const DEFAULT_POLICY: Policy = {
+    admin: {
+        ...denyAll(),
+        "permit.read": true,
+        "permit.write": true,
+        "permit.submit": true,
+        "permit.approve": true,
+        "permit.archive": true,
+        "inspection.read": true,
+        "inspection.schedule": true,
+        "inspection.complete": true,
+        "invoice.read": true,
+        "invoice.create": true,
+        "invoice.send": true,
+        "jurisdiction.read": true,
+        "jurisdiction.write": true,
+        "calc.use": true,
+        "calc.save_to_record": true,
+        "measurement.capture": true,
+        "measurement.save_to_record": true,
+        "audit.read": true,
+        "audit.export": true,
+    },
+
+    inspector: {
+        ...denyAll(),
+        "permit.read": true,
+        "inspection.read": true,
+        "inspection.schedule": true,
+        "inspection.complete": true,
+        "jurisdiction.read": true,
+        "calc.use": true,
+        "calc.save_to_record": true,
+        "measurement.capture": true,
+        "measurement.save_to_record": true,
+        "audit.read": true,
+    },
+
+    contractor: {
+        ...denyAll(),
+        "permit.read": true,
+        "permit.write": true,
+        "permit.submit": true,
+        "inspection.read": true,
+        "invoice.read": true,
+        "jurisdiction.read": true,
+        "calc.use": true,
+        "measurement.capture": true,
+    },
+
+    finance: {
+        ...denyAll(),
+        "permit.read": true,
+        "inspection.read": true,
+        "invoice.read": true,
+        "invoice.create": true,
+        "invoice.send": true,
+        "jurisdiction.read": true,
+        "calc.use": true,
+        "calc.save_to_record": true,
+        "audit.read": true,
+        "audit.export": true,
+    },
+};

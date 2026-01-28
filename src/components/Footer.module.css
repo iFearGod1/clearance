@@ -21,6 +21,9 @@
     transition: color 0.2s ease;
     color: var(--muted);
     text-decoration: none;
+    padding: 0.5rem;
+    display: inline-flex;
+    align-items: center;
 }
 
 .link:hover {
@@ -34,6 +37,7 @@
 
 .copyright {
     opacity: 0.8;
+    padding: 0.5rem;
 }
 
 .languageButton {
@@ -42,11 +46,23 @@
     color: inherit;
     font: inherit;
     cursor: pointer;
-    padding: 0;
+    padding: 0.5rem;
     display: inline-flex;
     align-items: center;
 }
 
 .languageButton:hover {
     color: var(--foreground);
+}
+
+@media (max-width: 640px) {
+    .footer {
+        gap: 1rem;
+        padding: 1rem;
+        font-size: 0.7rem;
+    }
+
+    .separator {
+        display: none;
+    }
 }
