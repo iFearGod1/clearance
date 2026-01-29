@@ -1,6 +1,12 @@
 import Link from "next/link";
 import { getPermit } from "@/app/actions/permits";
 
+const JURISDICTION_LABELS: Record<string, string> = {
+  jur_nyc_dob: "NYC DOB",
+  jur_la_city: "LA City",
+  jur_miami_dade: "Miami-Dade",
+};
+
 export default async function PermitDetailPage({
   params,
 }: {
@@ -28,6 +34,9 @@ export default async function PermitDetailPage({
     );
   }
 
+  const jurisdictionLabel =
+    JURISDICTION_LABELS[permit.jurisdictionId] ?? permit.jurisdictionId;
+
   return (
     <div style={{ padding: "2rem" }}>
       <Link href="/" style={{ display: "block", marginBottom: "0.5rem" }}>
@@ -45,7 +54,10 @@ export default async function PermitDetailPage({
         </div>
 
         <div style={{ marginTop: "0.5rem" }}>
-          <strong>Jurisdiction ID:</strong> {permit.jurisdictionId}
+          <strong>Jurisdiction:</strong> {jurisdictionLabel}{" "}
+          <span style={{ color: "var(--muted)" }}>
+            ({permit.jurisdictionId})
+          </span>
         </div>
 
         <div style={{ marginTop: "0.5rem" }}>
