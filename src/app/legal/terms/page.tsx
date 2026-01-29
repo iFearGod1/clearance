@@ -1,10 +1,23 @@
 
+import Link from "next/link";
 import React from 'react';
 import styles from '../legal.module.css';
 
 export default function TermsPage() {
     return (
         <div className={styles.container}>
+            <Link
+                href="/"
+                style={{
+                    color: "var(--muted)",
+                    fontSize: "0.9rem",
+                    textDecoration: "none",
+                    display: "inline-block",
+                    marginBottom: "1rem",
+                }}
+            >
+                ← Back to Dashboard
+            </Link>
             <header className={styles.header}>
                 <h1>Terms of Service</h1>
                 <p>Version 2.4 — Updated Oct 2026</p>

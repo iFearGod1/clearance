@@ -2,47 +2,37 @@
 
 import Link from "next/link";
 import { usePermits } from "@/lib/usePermits";
-import styles from "./page.module.css";
 
 export default function PermitsPage() {
   const { permits, loading } = usePermits();
 
-  const rows = loading
-    ? [
-        { id: "loading-1", title: "Loading…", status: "" },
-        { id: "loading-2", title: "Loading…", status: "" },
-        { id: "loading-3", title: "Loading…", status: "" },
-      ]
-    : permits;
-
   return (
-    <div className={styles.page}>
-      <header className={styles.header}>
-        <Link className={styles.backLink} href="/">
-          ← Back to Home
-        </Link>
-        <h1 className={styles.title}>Permits</h1>
-        <p className={styles.subtitle}>All permits in org_demo</p>
-      </header>
+    <div style={{ padding: "2rem" }}>
+      <Link href="/" style={{ display: "block", marginBottom: "1.5rem" }}>
+        ← Back to Dashboard
+      </Link>
 
-      <div className={`glass-panel ${styles.panel}`}>
-        <div className={styles.table}>
-          <div className={`${styles.row} ${styles.headRow}`}>
-            <div className={styles.cell}>Title</div>
-            <div className={styles.cell}>Status</div>
-          </div>
+      <div className="glass-panel">
+        <h1>Permits</h1>
 
-          {!loading && permits.length === 0 ? (
-            <div className={styles.empty}>No permits yet.</div>
-          ) : (
-            rows.map((permit) => (
-              <div key={permit.id} className={styles.row}>
-                <div className={styles.cell}>{permit.title}</div>
-                <div className={styles.cell}>{permit.status}</div>
-              </div>
-            ))
-          )}
-        </div>
+        {loading && <p>Loading permits…</p>}
+
+        {!loading && permits.length === 0 && (
+          <p>No permits available.</p>
+        )}
+
+        {!loading && permits.length > 0 && (
+          <ul style={{ marginTop: "1rem" }}>
+            {permits.map((permit) => (
+              <li key={permit.id} style={{ marginBottom: "0.75rem" }}>
+                <Link href={`/permits/${permit.id}`}>
+                  {permit.title}
+                </Link>{" "}
+                — <span>{permit.status}</span>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
     </div>
   );

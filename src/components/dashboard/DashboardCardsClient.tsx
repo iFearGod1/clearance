@@ -1,7 +1,9 @@
 "use client";
 
+import Link from "next/link";
 import { useDashboardSummary } from "@/lib/useDashboardSummary";
 import { usePermits } from "@/lib/usePermits";
+import { useJurisdictions } from "@/lib/useJurisdictions";
 
 function money(cents: number) {
   return new Intl.NumberFormat("en-US", {
@@ -14,6 +16,7 @@ function money(cents: number) {
 export default function DashboardCardsClient({ styles }: { styles: Record<string, string> }) {
   const { summary, loading } = useDashboardSummary();
   const { permits, loading: permitsLoading } = usePermits();
+  const { jurisdictions, loading: jurisdictionsLoading } = useJurisdictions();
 
   // Keep placeholders stable (no layout shifts)
   const inspections = loading
@@ -26,7 +29,16 @@ export default function DashboardCardsClient({ styles }: { styles: Record<string
   const invoiceAmount = loading ? "—" : money(summary?.invoices.openAmountCents ?? 0);
   const invoiceLabel = loading ? "Loading" : `Open (${summary?.invoices.open ?? 0})`;
 
-  const jurisdictionTags = ["NYC DOB", "LA City", "Miami-Dade"]; // Phase 1 static; we can wire later
+  const jurisdictionTags = jurisdictionsLoading
+    ? [
+        { id: "loading-1", name: "Loading…" },
+        { id: "loading-2", name: "Loading…" },
+        { id: "loading-3", name: "Loading…" },
+      ]
+    : jurisdictions.slice(0, 3).map((jurisdiction) => ({
+        id: jurisdiction.id,
+        name: jurisdiction.name,
+      }));
 
   const permitRows = permitsLoading
     ? [
@@ -57,6 +69,17 @@ export default function DashboardCardsClient({ styles }: { styles: Record<string
             </li>
           ))}
         </ul>
+        <Link
+          href="/permits"
+          style={{
+            color: "var(--muted)",
+            fontSize: "0.85rem",
+            marginTop: "0.75rem",
+            display: "inline-block",
+          }}
+        >
+          View all permits →
+        </Link>
       </div>
 
       <div className={`glass-panel ${styles.card}`}>
@@ -77,8 +100,8 @@ export default function DashboardCardsClient({ styles }: { styles: Record<string
       <div className={`glass-panel ${styles.card}`}>
         <h3>Jurisdiction</h3>
         {jurisdictionTags.map((j) => (
-          <div key={j} className={styles.tag}>
-            {j}
+          <div key={j.id} className={styles.tag}>
+            {j.name}
           </div>
         ))}
       </div>
