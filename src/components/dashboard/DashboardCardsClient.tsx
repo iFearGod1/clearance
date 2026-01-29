@@ -13,6 +13,25 @@ function money(cents: number) {
   }).format(cents / 100);
 }
 
+function humanizeStatus(status: string) {
+  const map: Record<string, string> = {
+    draft: "Draft",
+    submitted: "Submitted",
+    in_review: "In review",
+    approved: "Approved",
+    denied: "Denied",
+    active: "Active",
+    closed: "Closed",
+  };
+
+  if (map[status]) return map[status];
+
+  return status
+    .replace(/_/g, " ")
+    .toLowerCase()
+    .replace(/\b\w/g, (char) => char.toUpperCase());
+}
+
 export default function DashboardCardsClient({ styles }: { styles: Record<string, string> }) {
   const { summary, loading } = useDashboardSummary();
   const { permits, loading: permitsLoading } = usePermits();
@@ -63,11 +82,14 @@ export default function DashboardCardsClient({ styles }: { styles: Record<string
         {/* list goes BELOW the placeholder chart */}
         <ul className={styles.list}>
           {permitRows.map((permit) => (
-            <li key={permit.id}>
-              <span>{permit.title}</span>
-              {permit.status ? ` — ${permit.status}` : ""}
-            </li>
-          ))}
+  <li key={permit.id}>
+    <span>{permit.title}</span>{" "}
+    {permit.status ? (
+      <span style={{ color: "var(--muted)" }}>— {humanizeStatus(permit.status)}</span>
+    ) : null}
+  </li>
+))}
+
         </ul>
         <Link
           href="/permits"

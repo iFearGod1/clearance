@@ -3,6 +3,25 @@
 import Link from "next/link";
 import { usePermits } from "@/lib/usePermits";
 
+function humanizeStatus(status: string) {
+  const map: Record<string, string> = {
+    draft: "Draft",
+    submitted: "Submitted",
+    in_review: "In review",
+    approved: "Approved",
+    denied: "Denied",
+    active: "Active",
+    closed: "Closed",
+  };
+
+  if (map[status]) return map[status];
+
+  return status
+    .replace(/_/g, " ")
+    .toLowerCase()
+    .replace(/\b\w/g, (char) => char.toUpperCase());
+}
+
 export default function PermitsPage() {
   const { permits, loading } = usePermits();
 
@@ -18,7 +37,12 @@ export default function PermitsPage() {
         {loading && <p>Loading permits…</p>}
 
         {!loading && permits.length === 0 && (
-          <p>No permits available.</p>
+          <div>
+            <p>No permits yet.</p>
+            <p style={{ color: "var(--muted)", marginTop: "0.5rem" }}>
+              Create your first permit to start tracking approvals, inspections, and invoices.
+            </p>
+          </div>
         )}
 
         {!loading && permits.length > 0 && (
@@ -28,7 +52,7 @@ export default function PermitsPage() {
                 <Link href={`/permits/${permit.id}`}>
                   {permit.title}
                 </Link>{" "}
-                — <span>{permit.status}</span>
+                — <span>{humanizeStatus(permit.status)}</span>
               </li>
             ))}
           </ul>

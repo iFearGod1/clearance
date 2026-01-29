@@ -1,5 +1,7 @@
+"use client";
+
 import Link from "next/link";
-import { getPermit } from "@/app/actions/permits";
+import { usePermits } from "@/lib/usePermits";
 
 const JURISDICTION_LABELS: Record<string, string> = {
   jur_nyc_dob: "NYC DOB",
@@ -7,68 +9,60 @@ const JURISDICTION_LABELS: Record<string, string> = {
   jur_miami_dade: "Miami-Dade",
 };
 
-export default async function PermitDetailPage({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
-  const { id } = await params;
+function humanizeStatus(status: string) {
+  const map: Record<string, string> = {
+    draft: "Draft",
+    submitted: "Submitted",
+    in_review: "In review",
+    approved: "Approved",
+    denied: "Denied",
+    active: "Active",
+    closed: "Closed",
+  };
 
-  const permit = await getPermit(id);
+  if (map[status]) return map[status];
 
-  if (!permit) {
-    return (
-      <div style={{ padding: "2rem" }}>
-        <Link href="/" style={{ display: "block", marginBottom: "0.5rem" }}>
-          ← Back to Dashboard
-        </Link>
-        <Link href="/permits" style={{ display: "block", marginBottom: "1.5rem" }}>
-          ← Back to Permits
-        </Link>
+  return status
+    .replace(/_/g, " ")
+    .toLowerCase()
+    .replace(/\b\w/g, (char) => char.toUpperCase());
+}
 
-        <div className="glass-panel">
-          <h2>Permit not found</h2>
-          <p>The requested permit does not exist in the current dataset.</p>
-        </div>
-      </div>
-    );
-  }
-
-  const jurisdictionLabel =
-    JURISDICTION_LABELS[permit.jurisdictionId] ?? permit.jurisdictionId;
+export default function PermitsPage() {
+  const { permits, loading } = usePermits();
 
   return (
     <div style={{ padding: "2rem" }}>
-      <Link href="/" style={{ display: "block", marginBottom: "0.5rem" }}>
+      <Link href="/" style={{ display: "block", marginBottom: "1.5rem" }}>
         ← Back to Dashboard
-      </Link>
-      <Link href="/permits" style={{ display: "block", marginBottom: "1.5rem" }}>
-        ← Back to Permits
       </Link>
 
       <div className="glass-panel">
-        <h1>{permit.title}</h1>
+        <h1>Permits</h1>
 
-        <div style={{ marginTop: "1rem" }}>
-          <strong>Status:</strong> {permit.status}
-        </div>
+        {loading && <p>Loading permits…</p>}
 
-        <div style={{ marginTop: "0.5rem" }}>
-          <strong>Jurisdiction:</strong> {jurisdictionLabel}{" "}
-          <span style={{ color: "var(--muted)" }}>
-            ({permit.jurisdictionId})
-          </span>
-        </div>
+        {!loading && permits.length === 0 && <p>No permits available.</p>}
 
-        <div style={{ marginTop: "0.5rem" }}>
-          <strong>Created:</strong>{" "}
-          {new Date(permit.createdAt).toLocaleString()}
-        </div>
+        {!loading && permits.length > 0 && (
+          <ul style={{ marginTop: "1rem" }}>
+            {permits.map((permit) => {
+              const jurisdictionLabel =
+                JURISDICTION_LABELS[permit.jurisdictionId] ?? permit.jurisdictionId;
 
-        <div style={{ marginTop: "0.5rem" }}>
-          <strong>Updated:</strong>{" "}
-          {new Date(permit.updatedAt).toLocaleString()}
-        </div>
+              return (
+                <li key={permit.id} style={{ marginBottom: "0.75rem" }}>
+                  <Link href={`/permits/${permit.id}`}>{permit.title}</Link>{" "}
+                  — <span>{humanizeStatus(permit.status)}</span>{" "}
+                  —{" "}
+                  <span style={{ color: "var(--muted)" }}>
+                    {jurisdictionLabel} ({permit.jurisdictionId})
+                  </span>
+                </li>
+              );
+            })}
+          </ul>
+        )}
       </div>
     </div>
   );
