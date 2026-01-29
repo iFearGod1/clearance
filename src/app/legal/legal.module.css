@@ -93,3 +93,15 @@
         font-size: 0.8rem;
     }
 }
+
+.backLink {
+    color: var(--muted);
+    font-size: 0.9rem;
+    text-decoration: none;
+    display: inline-block;
+    margin-bottom: 1rem;
+}
+
+.backLink:hover {
+    text-decoration: underline;
+}

@@ -1,36 +1,64 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Clearance
 
-## Getting Started
+**An enterprise compliance command center demo** — a portfolio-ready Next.js application showcasing a permits, inspections, and approvals management system designed for organizations operating across multiple regulatory jurisdictions.
 
-First, run the development server:
+---
+
+## What's Included
+
+- **Dashboard** — Real-time summary of permits, inspections, invoices, and jurisdictions
+- **Permit List** — Browse and filter all permit records with humanized status labels
+- **Permit Detail** — View individual permit information with jurisdiction context
+- **Utility Panel** — Interactive compliance calculator with measurement tools
+- **Audit/Mock Data** — In-memory repository layer ready to swap for a real database
+- **Hero Background Video** — Autoplay with reduced-motion and save-data support
+
+---
+
+## Screenshots
+
+| Light Mode | Dark Mode |
+|------------|-----------|
+| ![Dashboard Light](assets/clearance-dashboard-insight-light.png) | ![Dashboard Dark](assets/clearance-dashboard-insight-dark.png) |
+
+---
+
+## Routes
+
+| Route | Description |
+|-------|-------------|
+| `/` | Marketing hero with embedded dashboard |
+| `/permits` | Permits list view |
+| `/permits/[id]` | Permit detail view |
+| `/tools/utility` | Utility panel / calculator |
+| `/legal/terms` | Terms of Service |
+| `/legal/privacy` | Privacy Policy |
+
+---
+
+## Local Setup
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) to view the application.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+To build for production:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+```
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## Deployed
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+**Live demo:** [https://clearance-omega.vercel.app](https://clearance-omega.vercel.app)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## Tech
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Next.js App Router · TypeScript · Server Actions · Mock Repository Layer · Vercel Deploy

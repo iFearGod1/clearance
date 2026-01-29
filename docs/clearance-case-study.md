@@ -1,80 +1,76 @@
-Clearance — Enterprise Compliance Platform
+# Clearance — Case Study
 
-Role: Product Design · Systems Architecture · Frontend Direction
-Timeline: 2025–2026
-Status: In Progress (Foundational System Built)
+**Role:** Systems Architecture · Frontend Development  
+**Stack:** Next.js App Router, TypeScript, Server Actions  
+**Status:** Demo Complete
 
-Overview
+---
 
-Clearance is an enterprise compliance platform designed to centralize permits, inspections, approvals, and jurisdictional workflows into a single operational command center. The product targets organizations operating across multiple regions where regulatory fragmentation creates operational drag, risk exposure, and inefficiency.
+## Problem
 
-The goal was not to design a “pretty dashboard,” but to architect a scalable compliance system that could grow in complexity without degrading usability or maintainability.
+Enterprise compliance tools fail in predictable ways:
 
-Problem
+1. **Fragmented workflows** across disconnected systems
+2. **Interfaces that collapse** under jurisdictional complexity
+3. **Rigid architectures** that lock teams into premature decisions
 
-Enterprise compliance tools typically fail in three ways:
+Organizations need traceability, extensibility, and clarity—without brittle UI or backend coupling.
 
-Fragmented workflows spread across disconnected tools
+---
 
-Interfaces that collapse under scale and complexity
+## Approach
 
-Rigid systems that become uneditable once shipped
+Build a modular compliance command center that:
 
-Teams need clarity, traceability, and extensibility—without locking themselves into brittle UI or backend decisions.
+- Separates presentation from domain logic via **typed contracts**
+- Uses a **mock repository layer** that can swap for a real database without rewrites
+- Leverages **Server Actions** for form handling with full type safety
+- Respects user preferences: hero video disables for reduced-motion and save-data
 
-Solution
+---
 
-Clearance is built as a modular compliance command center with:
+## System Design
 
-A light-mode, enterprise-grade visual system optimized for long sessions
+| Layer | Implementation |
+|-------|----------------|
+| **UI** | Next.js App Router with CSS Modules |
+| **Data** | In-memory repository behind typed interfaces |
+| **Actions** | Server Actions with domain validation |
+| **State** | React hooks consuming repository layer |
 
-A dashboard architecture that supports permits, inspections, invoices, and jurisdictional tagging without coupling
+The repository pattern ensures the demo can graduate to Postgres, Prisma, or any backend without touching UI code.
 
-Explicit separation between UI elements and business logic to prevent silent failures or locked paths
+---
 
-Every interaction is intentionally non-destructive and extendable.
+## Key Workflows
 
-Key Design Decisions
-1. Modular UI Architecture
+1. **Permit Lifecycle** — Create → Review → Approve/Deny → Invoice
+2. **Inspection Flow** — Schedule → Assign → Complete → Trigger Approval
+3. **Dashboard Aggregation** — Real-time summaries across permits, inspections, invoices
 
-Buttons and controls are scaffolded without premature handlers
+---
 
-Nothing is hard-locked; future routes and actions can be added without refactoring
+## Tradeoffs
 
-2. Visual Restraint
+| Decision | Rationale |
+|----------|-----------|
+| Mock data over real DB | Faster iteration; repository pattern preserves upgrade path |
+| CSS Modules over Tailwind | Fine-grained control; no utility class sprawl |
+| No auth in demo | Reduces scope; architecture supports future RBAC |
 
-Neutral materials, shallow depth, and restrained motion
+---
 
-No decorative noise that interferes with data interpretation
+## Next Steps
 
-3. Multi-Device Consistency
+- Integrate real database (Postgres + Prisma)
+- Add authentication and role-based access control
+- Expand audit logging with persistent storage
+- Deploy jurisdiction-specific rule engines
 
-iPhone and laptop interfaces designed in parallel
+---
 
-Layout logic scales cleanly across form factors
+## What This Demonstrates
 
-Technical Direction
-
-Clean, fully pathed project structure (/dev/clearance)
-
-No hidden dependencies or opaque abstractions
-
-Designed to integrate with future compliance logic, APIs, and enterprise authentication without rewrites
-
-Outcome (So Far)
-
-Core visual system established
-
-Dashboard and device layouts implemented
-
-Structural groundwork completed without technical debt
-
-The project is positioned for expansion into real compliance logic, data ingestion, and production-grade workflows.
-
-What This Demonstrates
-
-Systems thinking over surface-level UI
-
-Discipline in avoiding premature optimization
-
-Ability to design for scale, maintainability, and enterprise constraints
+- **Systems thinking** over surface-level UI polish
+- **Architectural discipline** that delays irreversible decisions
+- **Production patterns** ready for enterprise scale

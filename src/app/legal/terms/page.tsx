@@ -6,16 +6,7 @@ import styles from '../legal.module.css';
 export default function TermsPage() {
     return (
         <div className={styles.container}>
-            <Link
-                href="/"
-                style={{
-                    color: "var(--muted)",
-                    fontSize: "0.9rem",
-                    textDecoration: "none",
-                    display: "inline-block",
-                    marginBottom: "1rem",
-                }}
-            >
+            <Link href="/" className={styles.backLink}>
                 ← Back to Dashboard
             </Link>
             <header className={styles.header}>
