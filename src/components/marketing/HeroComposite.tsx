@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import UtilityPanel from '@/modules/calculator/components/UtilityPanel';
 import styles from './HeroComposite.module.css';
 
@@ -9,9 +9,10 @@ interface HeroCompositeProps {
 }
 
 export default function HeroComposite({ dashboard }: HeroCompositeProps) {
-    const [enableVideo] = useState(() => {
-        if (typeof window === 'undefined') return false;
+    // IMPORTANT: must start false so SSR and first client render match (<img>).
+    const [enableVideo, setEnableVideo] = useState(false);
 
+    useEffect(() => {
         const prefersReduced =
             window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches ?? false;
 
@@ -26,11 +27,10 @@ export default function HeroComposite({ dashboard }: HeroCompositeProps) {
 
         const saveData = connection?.saveData ?? false;
         const effectiveType = connection?.effectiveType ?? '';
-        const slowConnection =
-            effectiveType === '2g' || effectiveType === 'slow-2g';
+        const slowConnection = effectiveType === '2g' || effectiveType === 'slow-2g';
 
-        return !prefersReduced && !saveData && !slowConnection;
-    });
+        setEnableVideo(!prefersReduced && !saveData && !slowConnection);
+    }, []);
 
     return (
         <div className={styles.wrap}>
@@ -42,9 +42,13 @@ export default function HeroComposite({ dashboard }: HeroCompositeProps) {
                             muted
                             loop
                             playsInline
-                            preload="metadata"
+                            preload="auto"
                             poster="/media/clearance-hero-v1.png"
                             autoPlay
+                            onCanPlay={(e) => {
+                                const v = e.currentTarget;
+                                if (v.paused) v.play().catch(() => { });
+                            }}
                         >
                             <source src="/media/clearance-hero.mp4" type="video/mp4" />
                         </video>
@@ -64,9 +68,7 @@ export default function HeroComposite({ dashboard }: HeroCompositeProps) {
                         <div className={styles.laptopHeader}>
                             <span className={styles.laptopBrand}>clearance</span>
                         </div>
-                        <div className={styles.laptopScreen}>
-                            {dashboard}
-                        </div>
+                        <div className={styles.laptopScreen}>{dashboard}</div>
                     </div>
 
                     {/* Phone Frame */}
