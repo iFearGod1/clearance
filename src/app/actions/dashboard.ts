@@ -1,7 +1,6 @@
 "use server";
 
-import { repo } from "@/server/repo.index";
-import { ORG_ID } from "@/server/context";
+import { getRepoProvider, resolveOrgId } from "@/lib/repo/getRepoProvider";
 import { Permit, Inspection, Invoice } from "@/types/domain";
 
 export type DashboardSummary = {
@@ -10,11 +9,14 @@ export type DashboardSummary = {
   invoices: { total: number; open: number; paid: number; void: number; openAmountCents: number };
 };
 
-export async function getDashboardSummary(): Promise<DashboardSummary> {
+export async function getDashboardSummary(repoId: string): Promise<DashboardSummary> {
+  const provider = getRepoProvider(repoId);
+  const orgId = resolveOrgId(repoId);
+
   const [permits, inspections, invoices] = await Promise.all([
-    repo.listPermits(ORG_ID),
-    repo.listInspections(ORG_ID),
-    repo.listInvoices(ORG_ID),
+    provider.listPermits(orgId),
+    provider.listInspections(orgId),
+    provider.listInvoices(orgId),
   ]);
 
   return {

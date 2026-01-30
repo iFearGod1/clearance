@@ -1,23 +1,29 @@
 "use server";
 
-import { repo } from "@/server/repo.index";
-import { ORG_ID, USER_ID } from "@/server/context";
+import { getRepoProvider, resolveOrgId } from "@/lib/repo/getRepoProvider";
+import { USER_ID } from "@/server/context";
 import { Permit, ID } from "@/types/domain";
 
-export async function listPermits(): Promise<Permit[]> {
-  return repo.listPermits(ORG_ID);
+export async function listPermits(repoId: string): Promise<Permit[]> {
+  const provider = getRepoProvider(repoId);
+  const orgId = resolveOrgId(repoId);
+  return provider.listPermits(orgId);
 }
 
-export async function getPermit(id: ID): Promise<Permit | null> {
-  return repo.getPermit(ORG_ID, id);
+export async function getPermit(repoId: string, id: ID): Promise<Permit | null> {
+  const provider = getRepoProvider(repoId);
+  const orgId = resolveOrgId(repoId);
+  return provider.getPermit(orgId, id);
 }
 
-export async function savePermit(permit: Permit): Promise<Permit> {
-  const saved = await repo.upsertPermit(ORG_ID, permit);
+export async function savePermit(repoId: string, permit: Permit): Promise<Permit> {
+  const provider = getRepoProvider(repoId);
+  const orgId = resolveOrgId(repoId);
+  const saved = await provider.upsertPermit(orgId, permit);
 
-  await repo.appendAudit(ORG_ID, {
+  await provider.appendAudit(orgId, {
     id: `aud_${crypto.randomUUID()}`,
-    orgId: ORG_ID,
+    orgId,
     actorUserId: USER_ID,
     entityType: "permit",
     entityId: saved.id,

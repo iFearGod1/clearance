@@ -1,30 +1,30 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import styles from './Footer.module.css';
 
 export default function Footer() {
-    const [lang, setLang] = useState('en');
+    const [lang, setLang] = useState(() => {
+        if (typeof window === 'undefined') return 'en';
 
-    useEffect(() => {
-        // Load language preference
         const saved = localStorage.getItem('clearance_lang');
         if (saved) {
-            setLang(saved);
             document.documentElement.lang = saved;
+            return saved;
         }
-    }, []);
+
+        return 'en';
+    });
 
     const toggleLanguage = () => {
-        const newLang = lang === 'en' ? 'es' : 'en'; // Simple toggle for now
+        const newLang = lang === 'en' ? 'es' : 'en';
         setLang(newLang);
         localStorage.setItem('clearance_lang', newLang);
-        document.documentElement.lang = newLang; // Update html tag
+        document.documentElement.lang = newLang;
     };
 
     const getLanguageLabel = () => {
-        // Minimal display
         return lang === 'en' ? 'English' : 'Español';
     };
 

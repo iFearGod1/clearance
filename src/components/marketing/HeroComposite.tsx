@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import UtilityPanel from '@/modules/calculator/components/UtilityPanel';
 import styles from './HeroComposite.module.css';
 
@@ -9,19 +9,28 @@ interface HeroCompositeProps {
 }
 
 export default function HeroComposite({ dashboard }: HeroCompositeProps) {
-    const [enableVideo, setEnableVideo] = useState(false);
+    const [enableVideo] = useState(() => {
+        if (typeof window === 'undefined') return false;
 
-    useEffect(() => {
-        const prefersReduced = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
-        const connection = (navigator as Navigator & { connection?: { saveData?: boolean; effectiveType?: string } }).connection;
-        const saveData = connection?.saveData;
-        const effectiveType = connection?.effectiveType;
-        const slowConnection = effectiveType === '2g' || effectiveType === 'slow-2g';
+        const prefersReduced =
+            window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches ?? false;
 
-        if (!prefersReduced && !saveData && !slowConnection) {
-            setEnableVideo(true);
-        }
-    }, []);
+        const connection = (
+            navigator as Navigator & {
+                connection?: {
+                    saveData?: boolean;
+                    effectiveType?: string;
+                };
+            }
+        ).connection;
+
+        const saveData = connection?.saveData ?? false;
+        const effectiveType = connection?.effectiveType ?? '';
+        const slowConnection =
+            effectiveType === '2g' || effectiveType === 'slow-2g';
+
+        return !prefersReduced && !saveData && !slowConnection;
+    });
 
     return (
         <div className={styles.wrap}>
