@@ -9,7 +9,7 @@ interface HeroCompositeProps {
 }
 
 export default function HeroComposite({ dashboard }: HeroCompositeProps) {
-    // IMPORTANT: must start false so SSR and first client render match (<img>).
+    // Must start false so SSR + first client render match (image renders first).
     const [enableVideo, setEnableVideo] = useState(false);
 
     useEffect(() => {
@@ -43,7 +43,7 @@ export default function HeroComposite({ dashboard }: HeroCompositeProps) {
                             loop
                             playsInline
                             preload="auto"
-                            poster="/media/clearance-hero-v1.png"
+                            poster="/media/clearance-hero-poster.png"
                             autoPlay
                             onCanPlay={(e) => {
                                 const v = e.currentTarget;
@@ -55,7 +55,7 @@ export default function HeroComposite({ dashboard }: HeroCompositeProps) {
                     ) : (
                         <img
                             className={styles.backgroundMedia}
-                            src="/media/clearance-hero-v1.png"
+                            src="/media/clearance-hero-poster.png"
                             alt=""
                         />
                     )}
@@ -63,7 +63,7 @@ export default function HeroComposite({ dashboard }: HeroCompositeProps) {
                 </div>
 
                 <div className={styles.content}>
-                    {/* Laptop Frame */}
+                    {/* Laptop */}
                     <div className={styles.laptop}>
                         <div className={styles.laptopHeader}>
                             <span className={styles.laptopBrand}>clearance</span>
@@ -71,9 +71,9 @@ export default function HeroComposite({ dashboard }: HeroCompositeProps) {
                         <div className={styles.laptopScreen}>{dashboard}</div>
                     </div>
 
-                    {/* Phone Frame */}
+                    {/* Phone */}
                     <div className={styles.phone}>
-                        <div className={styles.phoneNotch}></div>
+                        <div className={styles.phoneNotch} aria-hidden="true" />
                         <div className={styles.phoneScreen}>
                             <UtilityPanel />
                         </div>
