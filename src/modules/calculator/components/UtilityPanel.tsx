@@ -9,7 +9,7 @@ import {
     type LengthMeasurement,
     type MeasurementMethod
 } from '@/modules/measurement';
-import type { LengthUnit, UnitSystem } from '@/types/units';
+import type { LengthUnit } from '@/types/units';
 import type { CalculatorOp } from '@/modules/calculator/types';
 import { appendAuditEvent, auditId, isoNow } from '@/lib/audit';
 import styles from '@/app/tools/utility/utility.module.css';

@@ -1,5 +1,4 @@
 import type { RepoProvider } from "./types";
-import type { ID } from "@/types/domain";
 
 /**
  * Neon provider stub.
@@ -9,31 +8,31 @@ import type { ID } from "@/types/domain";
 export const neonProvider: RepoProvider = {
     providerId: "neon",
 
-    async listPermits(_orgId: ID) {
+    async listPermits() {
         throw new Error("Neon provider not configured");
     },
 
-    async getPermit(_orgId: ID, _id: ID) {
+    async getPermit() {
         throw new Error("Neon provider not configured");
     },
 
-    async upsertPermit(_orgId: ID) {
+    async upsertPermit() {
         throw new Error("Neon provider not configured");
     },
 
-    async listInspections(_orgId: ID) {
+    async listInspections() {
         throw new Error("Neon provider not configured");
     },
 
-    async listInvoices(_orgId: ID) {
+    async listInvoices() {
         throw new Error("Neon provider not configured");
     },
 
-    async listJurisdictions(_orgId: ID) {
+    async listJurisdictions() {
         throw new Error("Neon provider not configured");
     },
 
-    async appendAudit(_orgId: ID) {
+    async appendAudit() {
         throw new Error("Neon provider not configured");
     },
 };

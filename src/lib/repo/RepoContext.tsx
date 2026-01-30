@@ -135,6 +135,38 @@ export function RepoProvider({ children }: { children: ReactNode }) {
         }
     }, []);
 
+    // Dev harness: expose window.__clearance in development
+    useEffect(() => {
+        if (process.env.NODE_ENV !== "development") return;
+        if (typeof window === "undefined") return;
+
+        const harness = {
+            setRepo: (idOrSlug: string): boolean => {
+                const repo = repoRegistry.validate(idOrSlug);
+                if (!repo) {
+                    console.warn(`[__clearance] Invalid repo: ${idOrSlug}`);
+                    return false;
+                }
+                setActiveRepoIdState(repo.id);
+                writeStorage(repo.id);
+                console.log(`[__clearance] Repo set to: ${repo.id}`);
+                return true;
+            },
+            getRepo: () => ({
+                activeRepoId,
+                provider: repoRegistry.getById(activeRepoId)?.provider ?? "unknown",
+                hydrated,
+            }),
+        };
+
+        // Attach to window
+        (window as Window & { __clearance?: typeof harness }).__clearance = harness;
+
+        return () => {
+            delete (window as Window & { __clearance?: typeof harness }).__clearance;
+        };
+    }, [activeRepoId, hydrated]);
+
     // Setter with validation
     const setActiveRepoId = useCallback((nextIdOrSlug: string): boolean => {
         const repo = repoRegistry.validate(nextIdOrSlug);
