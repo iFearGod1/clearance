@@ -10,6 +10,7 @@ import {
     type ReactNode,
 } from "react";
 import { repoRegistry, DEFAULT_REPO_ID, type RepoEntry } from "./registry";
+import { logDebug, logWarn } from "@/lib/logger";
 
 // --- Constants (per contract) ---
 const STORAGE_KEY = "clearance_active_repo";
@@ -68,9 +69,7 @@ function clearStorage(): void {
 }
 
 function warnInDev(message: string): void {
-    if (process.env.NODE_ENV === "development") {
-        console.warn(`[Clearance] ${message}`);
-    }
+    logWarn(`[Clearance] ${message}`);
 }
 
 // --- Provider ---
@@ -126,13 +125,11 @@ export function RepoProvider({ children }: { children: ReactNode }) {
         /* eslint-enable react-hooks/set-state-in-effect */
 
         // Dev verification logging
-        if (process.env.NODE_ENV === "development") {
-            console.log("[Clearance] Repo hydration complete:", {
-                resolvedId,
-                localStorage: readStorage(),
-                hydrated: true,
-            });
-        }
+        logDebug("Repo hydration complete", {
+            resolvedId,
+            localStorage: readStorage(),
+            hydrated: true,
+        });
     }, []);
 
     // Dev harness: expose window.__clearance in development
@@ -144,12 +141,12 @@ export function RepoProvider({ children }: { children: ReactNode }) {
             setRepo: (idOrSlug: string): boolean => {
                 const repo = repoRegistry.validate(idOrSlug);
                 if (!repo) {
-                    console.warn(`[__clearance] Invalid repo: ${idOrSlug}`);
+                    logWarn(`[__clearance] Invalid repo: ${idOrSlug}`);
                     return false;
                 }
                 setActiveRepoIdState(repo.id);
                 writeStorage(repo.id);
-                console.log(`[__clearance] Repo set to: ${repo.id}`);
+                logDebug(`[__clearance] Repo set to: ${repo.id}`);
                 return true;
             },
             getRepo: () => ({
@@ -178,12 +175,10 @@ export function RepoProvider({ children }: { children: ReactNode }) {
         setActiveRepoIdState(repo.id);
         writeStorage(repo.id);
 
-        if (process.env.NODE_ENV === "development") {
-            console.log("[Clearance] Repo switched:", {
-                newRepoId: repo.id,
-                localStorage: repo.id,
-            });
-        }
+        logDebug("Repo switched", {
+            newRepoId: repo.id,
+            localStorage: repo.id,
+        });
 
         return true;
     }, []);

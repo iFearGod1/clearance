@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Footer from "@/components/Footer";
 import { RepoProvider } from "@/lib/repo";
+import { AppShell } from "@/components/layout";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -28,13 +29,14 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <RepoProvider>
-          <main style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-            {children}
-          </main>
-          <Footer />
+          <AppShell>
+            <main style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+              {children}
+            </main>
+            <Footer />
+          </AppShell>
         </RepoProvider>
       </body>
     </html>
   );
 }
-

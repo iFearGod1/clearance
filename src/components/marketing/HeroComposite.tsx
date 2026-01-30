@@ -43,7 +43,7 @@ export default function HeroComposite({ dashboard }: HeroCompositeProps) {
                             loop
                             playsInline
                             preload="metadata"
-                            poster="/media/clearance-hero-poster.png"
+                            poster="/media/clearance-hero-v1.png"
                             autoPlay
                         >
                             <source src="/media/clearance-hero.mp4" type="video/mp4" />
@@ -51,7 +51,7 @@ export default function HeroComposite({ dashboard }: HeroCompositeProps) {
                     ) : (
                         <img
                             className={styles.backgroundMedia}
-                            src="/media/clearance-hero-poster.png"
+                            src="/media/clearance-hero-v1.png"
                             alt=""
                         />
                     )}

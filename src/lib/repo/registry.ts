@@ -43,6 +43,14 @@ const MOCK_REPO: RepoEntry = {
     orgId: "org_demo",
 };
 
+const SANDBOX_REPO: RepoEntry = {
+    id: "repo_sandbox",
+    slug: "sandbox",
+    displayName: "Sandbox",
+    provider: "mock",
+    orgId: "org_sandbox",
+};
+
 const NEON_REPO: RepoEntry = {
     id: "repo_neon",
     slug: "neon",
@@ -51,7 +59,7 @@ const NEON_REPO: RepoEntry = {
     orgId: "org_demo",
 };
 
-const REPOS: readonly RepoEntry[] = [MOCK_REPO, NEON_REPO];
+const REPOS: readonly RepoEntry[] = [MOCK_REPO, SANDBOX_REPO, NEON_REPO];
 
 // --- Registry implementation ---
 
